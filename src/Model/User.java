@@ -6,12 +6,12 @@ import java.io.Serializable;
  * Created by SAimon22 on 6/7/2017.
  */
 public class User extends Person implements Serializable {
-    private String phoneNumber;
-    private String profilePhoto;
-    private String username;
-    private String password;
+     String phoneNumber;
+     String profilePhoto;
+     String username;
+     String password;
 
-    private String email;
+     String email;
 
 
     public User() {

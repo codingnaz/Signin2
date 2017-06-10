@@ -95,7 +95,16 @@ public class CreateAccount implements Initializable{
             lastNError.setVisible(true);
             lastNError.setTextFill(Color.RED);
         }
-        return userInputFirstName.getText();
+        else if (!userInputSSN.getText().isEmpty()) {
+            Pattern ssnPattern = Pattern.compile("^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$");
+            if (!ssnPattern.matcher(userInputSSN.getText()).matches()){
+                hasError= true;
+                SSNError.setText("Error");
+                SSNError.setVisible(true);
+                SSNError.setTextFill(Color.RED);
+            }
+        }
+        return userInputSSN.getText();
 
     }
 
@@ -117,15 +126,23 @@ public class CreateAccount implements Initializable{
 
     public String password(){
         String goodPassword= null;
-        if(userInputPassword.getText().equals(userInputPasswordConfirm.getText())){
+        if(!userInputPassword.getText().isEmpty() ){
+            Pattern patternPassword = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,}");
+            if (patternPassword.matcher(userInputPassword.getText()).matches() && userInputPassword.getText().equals(userInputPasswordConfirm.getText())) {
+                goodPassword= userInputPassword.getText();
+            } else{
+            hasError= true;
+            passwordError.setText("Error");
+            passwordError.setVisible(true);
+            passwordError.setTextFill(Color.RED);
+            }
+        }
+        else{
             hasError= true;
             passwordError.setText("Error");
             passwordError.setVisible(true);
             passwordError.setTextFill(Color.RED);
 
-        }
-        else{
-            goodPassword= userInputPassword.getText();
         }
            return goodPassword;
     }
@@ -140,7 +157,7 @@ public class CreateAccount implements Initializable{
         }return userInputUserName.getText();
     }
     public String goodUserName(){
-        String goodUserNames;
+        String goodUserNames =null;
         if(UserName().equals(users.getUsername())){
             userNameError.setText("User Name Exit");
             userNameError.setVisible(true);
@@ -149,7 +166,7 @@ public class CreateAccount implements Initializable{
             goodUserNames= null;
         }
         else{goodUserNames= UserName(); }
-        return UserName();
+        return goodUserNames;
     }
        /** else if ( userInputUserName.getText().equals(User.getUsername()))
         String goodUserName= null;
@@ -224,11 +241,11 @@ public String gender(){
            User newUser= new User(
                    goodFirstName(),
                    goodLastName(),
-                   userInputSSN.getText(),
+                   goodSSN(),
                    userInputDOB.getText(),
                    gender(),
                    goodUserName(),
-                   userInputPassword.getText(),
+                   password(),
                    inputEmail.getText(),
                    "test",
                    "test");
